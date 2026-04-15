@@ -138,14 +138,60 @@ public class IntRange {
         return result;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(min, max);
+    /**
+     * It constrains the value specified to the range. If the value is within
+     * the range, it is returned as is. Otherwise, the lower or upper bound is
+     * returned, whichever is closer to the value.
+     *
+     * @param value the value to be constrained
+     * @return the constrained value in the range
+     */
+    public int clamp(int value) {
+        if (contains(value)) {
+            return value;
+        }
+        return value < min ? min : max;
+    }
+
+    /**
+     * {@return the union of the range with the range specified}
+     *
+     * @param range the range to be unioned with the range
+     * @throws IllegalArgumentException TODO
+     */
+    public IntRange union(IntRange range) {
+        if (this == range) {
+            return this;
+        }
+        if (isOverlapping(range) || max == range.getMin() - 1 || min == range.getMax() + 1) {
+            return new IntRange(Integer.min(min, range.getMin()), Integer.max(max, range.getMax()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * {@return the union of the range with the ranges specified}
+     *
+     * @param ranges the ranges to be unioned with the range
+     * @throws IllegalArgumentException TODO
+     */
+    public IntRange union(IntRange... ranges) {
+        var result = this;
+        for (var range : ranges) {
+            result = result.union(range);
+        }
+        return result;
     }
 
     @Override
     public boolean equals(Object o) {
         return (o instanceof IntRange range) && min == range.getMin() && max == range.getMax();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(min, max);
     }
 
     @Override

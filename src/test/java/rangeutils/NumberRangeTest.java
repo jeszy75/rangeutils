@@ -149,10 +149,27 @@ class NumberRangeTest {
     }
 
     @Test
-    void testHashCode() {
-        assertTrue(doubleRange.hashCode() == doubleRange.hashCode());
-        assertTrue(doubleRange.hashCode() == doubleRange.of(15.0, 30.0).hashCode());
-        assertFalse(doubleRange.hashCode() == NumberRange.all(Double.class).hashCode());
+    void clamp() {
+        assertEquals(23, integerRange.clamp(23));
+        assertEquals(15, integerRange.clamp(15));
+        assertEquals(30, integerRange.clamp(30));
+        assertEquals(15, integerRange.clamp(-10));
+        assertEquals(30, integerRange.clamp(100));
+    }
+
+    @Test
+    void union() {
+        assertSame(integerRange, integerRange.union(integerRange));
+        assertRange(15, 30, integerRange.union(NumberRange.of(20, 25)));
+        assertRange(-5, 30,  integerRange.union(NumberRange.of(-5, 20)));
+        assertRange(15, 50, integerRange.union(NumberRange.of(25, 50)));
+        assertThrows(IllegalArgumentException.class, () -> integerRange.union(NumberRange.of(-10, 5)));
+    }
+
+    @Test
+    void union_vararg() {
+        assertRange(10, 40, integerRange.union(NumberRange.of(10, 20), NumberRange.of(25, 40)));
+        assertRange(-5, 100, integerRange.union(NumberRange.of(-5, 15), NumberRange.of(25, 100)));
     }
 
     @Test
@@ -164,6 +181,13 @@ class NumberRangeTest {
         assertFalse(integerRange.equals(doubleRange));
         assertFalse(integerRange.equals(null));
         assertFalse(integerRange.equals("Hello, World!"));
+    }
+
+    @Test
+    void testHashCode() {
+        assertTrue(doubleRange.hashCode() == doubleRange.hashCode());
+        assertTrue(doubleRange.hashCode() == doubleRange.of(15.0, 30.0).hashCode());
+        assertFalse(doubleRange.hashCode() == NumberRange.all(Double.class).hashCode());
     }
 
     @Test

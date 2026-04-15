@@ -178,9 +178,49 @@ public class NumberRange<T extends Number & Comparable<T>> {
         return result;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(min, max);
+    /**
+     * It constrains the value specified to the range. If the value is within
+     * the range, it is returned as is. Otherwise, the lower or upper bound is
+     * returned, whichever is closer to the value.
+     *
+     * @param value the value to be constrained
+     * @return the constrained value in the range
+     */
+    public T clamp(T value) {
+        if (contains(value)) {
+            return value;
+        }
+        return min.compareTo(value) > 0 ? min : max;
+    }
+
+    /**
+     * {@return the union of the range with the range specified}
+     *
+     * @param range the range to be unioned with the range
+     * @throws IllegalArgumentException TODO
+     */
+    public NumberRange<T> union(NumberRange<T> range) {
+        if (this == range) {
+            return this;
+        }
+        if (!isOverlapping(range)) {
+            throw new IllegalArgumentException();
+        }
+        return NumberRange.of(min(min, range.getMin()), max(max, range.getMax()));
+    }
+
+    /**
+     * {@return the union of the range with the ranges specified}
+     *
+     * @param ranges the ranges to be unioned with the range
+     * @throws IllegalArgumentException TODO
+     */
+    public final NumberRange<T> union(NumberRange<T>... ranges) {
+        var result = this;
+        for (var range : ranges) {
+            result = result.union(range);
+        }
+        return result;
     }
 
     @Override
@@ -188,6 +228,11 @@ public class NumberRange<T extends Number & Comparable<T>> {
         return (o instanceof NumberRange<?> range)
                 && Objects.equals(min, range.getMin())
                 && Objects.equals(max, range.getMax());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(min, max);
     }
 
     @Override
