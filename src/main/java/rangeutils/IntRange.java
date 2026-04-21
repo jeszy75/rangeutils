@@ -157,7 +157,8 @@ public class IntRange {
      * {@return the union of the range with the range specified}
      *
      * @param range the range to be unioned with the range
-     * @throws IllegalArgumentException TODO
+     * @throws IllegalArgumentException if the specified range neither overlaps
+     *                                  with nor is adjacent to this range
      */
     public IntRange union(IntRange range) {
         if (this == range || range.isEmpty()) {
@@ -174,7 +175,8 @@ public class IntRange {
      * {@return the union of the range with the ranges specified}
      *
      * @param ranges the ranges to be unioned with the range
-     * @throws IllegalArgumentException TODO
+     * @throws IllegalArgumentException if the specified range neither overlaps
+     *                                  with nor is adjacent to this range
      */
     public IntRange union(IntRange... ranges) {
         var result = this;
