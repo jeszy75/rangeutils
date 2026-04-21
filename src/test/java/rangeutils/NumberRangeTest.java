@@ -149,6 +149,34 @@ class NumberRangeTest {
     }
 
     @Test
+    void clamp() {
+        assertEquals(23L, longRange.clamp(23L));
+        assertEquals(15L, longRange.clamp(15L));
+        assertEquals(30L, longRange.clamp(30L));
+        assertEquals(15L, longRange.clamp(-10L));
+        assertEquals(30L, longRange.clamp(100L));
+        assertThrows(IllegalArgumentException.class, () -> NumberRange.<Long>empty().clamp(0L));
+    }
+
+    @Test
+    void union() {
+        assertSame(doubleRange, doubleRange.union(doubleRange));
+        assertRange(15.0, 30.0, doubleRange.union(NumberRange.of(20.0, 25.0)));
+        assertRange(-5.0, 30.0,  doubleRange.union(NumberRange.of(-5.0, 20.0)));
+        assertRange(15.0, 50.0, doubleRange.union(NumberRange.of(25.0, 50.0)));
+        assertEquals(doubleRange, doubleRange.union(NumberRange.<Double>empty()));
+        assertEquals(NumberRange.all(Double.class), doubleRange.union(NumberRange.all(Double.class)));
+        assertThrows(IllegalArgumentException.class, () -> doubleRange.union(NumberRange.of(-10.0, 5.0)));
+        assertThrows(IllegalArgumentException.class, () -> doubleRange.union(NumberRange.of(40.0, 50.0)));
+    }
+
+    @Test
+    void union_Varargs() {
+        assertRange(15.0f, 50.0f, floatRange.union(NumberRange.of(25.0f, 40.0f), NumberRange.of(35.0f, 50.0f)));
+        assertThrows(IllegalArgumentException.class, () -> floatRange.union(NumberRange.of(25.0f, 40.0f), NumberRange.of(-5.0f, 10.0f)));
+    }
+
+    @Test
     void testEquals() {
         assertTrue(integerRange.equals(integerRange));
         assertTrue(integerRange.equals(NumberRange.of(15, 30)));
