@@ -35,7 +35,7 @@ public class IntRange {
     /**
      * {@return the inclusive lower bound of the range}
      */
-    public int getMin()  {
+    public int getMin() {
         return min;
     }
 

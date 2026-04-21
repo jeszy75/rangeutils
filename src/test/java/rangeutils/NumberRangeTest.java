@@ -28,7 +28,7 @@ class NumberRangeTest {
         floatRange = NumberRange.of(15.0f, 30.0f);
         integerRange = NumberRange.of(15, 30);
         longRange = NumberRange.of(15L, 30L);
-        shortRange = NumberRange.of((short)  15, (short) 30);
+        shortRange = NumberRange.of((short) 15, (short) 30);
     }
 
     @Test
@@ -162,7 +162,7 @@ class NumberRangeTest {
     void union() {
         assertSame(doubleRange, doubleRange.union(doubleRange));
         assertRange(15.0, 30.0, doubleRange.union(NumberRange.of(20.0, 25.0)));
-        assertRange(-5.0, 30.0,  doubleRange.union(NumberRange.of(-5.0, 20.0)));
+        assertRange(-5.0, 30.0, doubleRange.union(NumberRange.of(-5.0, 20.0)));
         assertRange(15.0, 50.0, doubleRange.union(NumberRange.of(25.0, 50.0)));
         assertEquals(doubleRange, doubleRange.union(NumberRange.<Double>empty()));
         assertEquals(NumberRange.all(Double.class), doubleRange.union(NumberRange.all(Double.class)));

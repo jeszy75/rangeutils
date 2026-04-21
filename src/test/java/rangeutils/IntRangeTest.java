@@ -148,7 +148,7 @@ class IntRangeTest {
     void union() {
         assertSame(range, range.union(range));
         assertIntRange(15, 30, range.union(IntRange.of(20, 25)));
-        assertIntRange(-5, 30,  range.union(IntRange.of(-5, 20)));
+        assertIntRange(-5, 30, range.union(IntRange.of(-5, 20)));
         assertIntRange(15, 50, range.union(IntRange.of(25, 50)));
         assertIntRange(10, 30, range.union(IntRange.of(10, 14)));
         assertIntRange(15, 40, range.union(IntRange.of(31, 40)));
@@ -161,7 +161,7 @@ class IntRangeTest {
     @Test
     void union_Varargs() {
         assertIntRange(15, 50, range.union(IntRange.of(25, 40), IntRange.of(35, 50)));
-        assertIntRange(5,  50, range.union(IntRange.of(31, 50),  IntRange.of(5, 14)));
+        assertIntRange(5, 50, range.union(IntRange.of(31, 50), IntRange.of(5, 14)));
         assertThrows(IllegalArgumentException.class, () -> range.union(IntRange.of(25, 40), IntRange.of(-5, 10)));
     }
 

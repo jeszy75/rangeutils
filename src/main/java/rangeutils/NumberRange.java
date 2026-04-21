@@ -47,7 +47,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
     /**
      * {@return the inclusive lower bound of the range}
      */
-    public T getMin()  {
+    public T getMin() {
         return min;
     }
 
