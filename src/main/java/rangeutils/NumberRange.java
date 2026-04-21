@@ -69,6 +69,8 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @return a {@code NumberRange} object, not {@code null}
      */
     public static <T extends Number & Comparable<T>> @NonNull NumberRange<T> of(@NonNull T min, @NonNull T max) {
+        Objects.requireNonNull(min, "min must not be null");
+        Objects.requireNonNull(max, "max must not be null");
         if (!ALL_CACHE.containsKey(min.getClass())) {
             throw new IllegalArgumentException("Unsupported numeric type: " + min.getClass().getName());
         }
@@ -113,6 +115,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param value the value to be tested
      */
     public boolean contains(@NonNull T value) {
+        Objects.requireNonNull(value, "value must not be null");
         return !isEmpty() && min.compareTo(value) <= 0 && value.compareTo(max) <= 0;
     }
 
@@ -122,6 +125,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param range the range to be tested
      */
     public boolean containsRange(@NonNull NumberRange<T> range) {
+        Objects.requireNonNull(range, "range must not be null");
         return range.isEmpty() ||
             (contains(range.getMin()) && contains(range.getMax()));
     }
@@ -132,6 +136,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param range the range to be tested
      */
     public boolean isOverlapping(@NonNull NumberRange<T> range) {
+        Objects.requireNonNull(range, "range must not be null");
         if (isEmpty() || range.isEmpty()) {
             return false;
         }
@@ -145,6 +150,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param range the range to be tested
      */
     public boolean isDisjoint(@NonNull NumberRange<T> range) {
+        Objects.requireNonNull(range, "range must not be null");
         return !isOverlapping(range);
     }
 
@@ -154,6 +160,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param range the range to be intersected with the range
      */
     public @NonNull NumberRange<T> intersect(@NonNull NumberRange<T> range) {
+        Objects.requireNonNull(range, "range must not be null");
         if (this == range) {
             return this;
         }
@@ -170,6 +177,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      */
     @SafeVarargs
     public final @NonNull NumberRange<T> intersect(@NonNull NumberRange<T>... ranges) {
+        Objects.requireNonNull(ranges, "ranges must not be null");
         var result = this;
         for (var range : ranges) {
             result = result.intersect(range);
@@ -190,6 +198,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @throws IllegalArgumentException if the range is empty
      */
     public @NonNull T clamp(@NonNull T value) {
+        Objects.requireNonNull(value, "value must not be null");
         if (isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -207,6 +216,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *                                  this range
      */
     public @NonNull NumberRange<T> union(@NonNull NumberRange<T> range) {
+        Objects.requireNonNull(range, "range must not be null");
         if (this == range || range.isEmpty()) {
             return this;
         }
@@ -225,6 +235,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *                                  this range
      */
     public @NonNull NumberRange<T> union(@NonNull NumberRange<T>... ranges) {
+        Objects.requireNonNull(ranges, "ranges must not be null");
         var result = this;
         for (var range : ranges) {
             result = result.union(range);

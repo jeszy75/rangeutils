@@ -86,6 +86,7 @@ public class IntRange {
      * @param range the range to be tested
      */
     public boolean containsRange(@NonNull IntRange range) {
+        Objects.requireNonNull(range, "range must not be null");
         return range.isEmpty() ||
             (contains(range.getMin()) && contains(range.getMax()));
     }
@@ -96,6 +97,7 @@ public class IntRange {
      * @param range the range to be tested
      */
     public boolean isOverlapping(@NonNull IntRange range) {
+        Objects.requireNonNull(range, "range must not be null");
         return contains(range.getMin()) || contains(range.getMax())
                 || range.contains(min) || range.contains(max);
     }
@@ -106,6 +108,7 @@ public class IntRange {
      * @param range the range to be tested
      */
     public boolean isDisjoint(@NonNull IntRange range) {
+        Objects.requireNonNull(range, "range must not be null");
         return !isOverlapping(range);
     }
 
@@ -115,6 +118,7 @@ public class IntRange {
      * @param range the range to be intersected with the range
      */
     public @NonNull IntRange intersect(@NonNull IntRange range) {
+        Objects.requireNonNull(range, "range must not be null");
         if (this == range) {
             return this;
         }
@@ -130,6 +134,7 @@ public class IntRange {
      * @param ranges the ranges to be intersected with the range
      */
     public @NonNull IntRange intersect(@NonNull IntRange... ranges) {
+        Objects.requireNonNull(ranges, "ranges must not be null");
         var result = this;
         for (var range : ranges) {
             result = result.intersect(range);
@@ -163,6 +168,7 @@ public class IntRange {
      *                                  with nor is adjacent to this range
      */
     public @NonNull IntRange union(@NonNull IntRange range) {
+        Objects.requireNonNull(range, "range must not be null");
         if (this == range || range.isEmpty()) {
             return this;
         }
@@ -181,6 +187,7 @@ public class IntRange {
      *                                  with nor is adjacent to this range
      */
     public @NonNull IntRange union(@NonNull IntRange... ranges) {
+        Objects.requireNonNull(ranges, "ranges must not be null");
         var result = this;
         for (var range : ranges) {
             result = result.union(range);
