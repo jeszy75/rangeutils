@@ -136,6 +136,36 @@ class IntRangeTest {
     }
 
     @Test
+    void clamp() {
+        assertEquals(23, range.clamp(23));
+        assertEquals(15, range.clamp(15));
+        assertEquals(30, range.clamp(30));
+        assertEquals(15, range.clamp(-10));
+        assertEquals(30, range.clamp(100));
+    }
+
+    @Test
+    void union() {
+        assertSame(range, range.union(range));
+        assertIntRange(15, 30, range.union(IntRange.of(20, 25)));
+        assertIntRange(-5, 30,  range.union(IntRange.of(-5, 20)));
+        assertIntRange(15, 50, range.union(IntRange.of(25, 50)));
+        assertIntRange(10, 30, range.union(IntRange.of(10, 14)));
+        assertIntRange(15, 40, range.union(IntRange.of(31, 40)));
+        assertEquals(range, range.union(IntRange.EMPTY));
+        assertEquals(IntRange.ALL, range.union(IntRange.ALL));
+        assertThrows(IllegalArgumentException.class, () -> range.union(IntRange.of(-10, 5)));
+        assertThrows(IllegalArgumentException.class, () -> range.union(IntRange.of(40, 50)));
+    }
+
+    @Test
+    void union_Varargs() {
+        assertIntRange(15, 50, range.union(IntRange.of(25, 40), IntRange.of(35, 50)));
+        assertIntRange(5,  50, range.union(IntRange.of(31, 50),  IntRange.of(5, 14)));
+        assertThrows(IllegalArgumentException.class, () -> range.union(IntRange.of(25, 40), IntRange.of(-5, 10)));
+    }
+
+    @Test
     void testEquals() {
         assertTrue(range.equals(range));
         assertTrue(range.equals(IntRange.of(15, 30)));
