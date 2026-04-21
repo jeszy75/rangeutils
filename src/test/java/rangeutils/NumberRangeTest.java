@@ -142,7 +142,7 @@ class NumberRangeTest {
     }
 
     @Test
-    void intersect_vararg() {
+    void intersect_Varargs() {
         assertEquals(NumberRange.of(20, 25), integerRange.intersect(NumberRange.of(10, 25), NumberRange.of(20, 35)));
         assertEquals(NumberRange.of(20, 25), integerRange.intersect(NumberRange.of(-100, 100), NumberRange.of(20, 25)));
         assertEquals(NumberRange.<Integer>empty(), integerRange.intersect(NumberRange.all(Integer.class), NumberRange.<Integer>empty()));
