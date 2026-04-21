@@ -175,8 +175,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param ranges the ranges to be intersected with the range
      */
-    @SafeVarargs
-    public final @NonNull NumberRange<T> intersect(@NonNull NumberRange<T>... ranges) {
+    public @NonNull NumberRange<T> intersect(@NonNull NumberRange<T>... ranges) {
         Objects.requireNonNull(ranges, "ranges must not be null");
         var result = this;
         for (var range : ranges) {
