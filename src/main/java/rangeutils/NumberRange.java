@@ -178,6 +178,58 @@ public class NumberRange<T extends Number & Comparable<T>> {
         return result;
     }
 
+    /**
+     * It constrains the value specified to the range. If the value is within
+     * the range, it is returned as is. Otherwise, the lower or upper bound is
+     * returned, whichever is closer to the value.
+     *
+     * @param value the value to be constrained
+     * @return the constrained value in the range
+     * @throws IllegalArgumentException if the range is empty
+     */
+    public T clamp(T value) {
+        if (isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        if (contains(value)) {
+            return value;
+        }
+        return min.compareTo(value) > 0 ? min : max;
+    }
+
+    /**
+     * {@return the union of the range with the range specified}
+     *
+     * @param range the range to be unioned with the range
+     * @throws IllegalArgumentException if the specified range is disjoint from
+     *                                  this range
+     */
+    public NumberRange<T> union(NumberRange<T> range) {
+        if (this == range || range.isEmpty()) {
+            return this;
+        }
+        if (isOverlapping(range)) {
+            return new NumberRange(min(min, range.getMin()), max(max, range.getMax()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * {@return the union of the range with the ranges specified}
+     *
+     * @param ranges the ranges to be unioned with the range
+     * @throws IllegalArgumentException if the specified range is disjoint from
+     *                                  this range
+     */
+    public NumberRange<T> union(NumberRange<T>... ranges) {
+        var result = this;
+        for (var range : ranges) {
+            result = result.union(range);
+        }
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         return (o instanceof NumberRange<?> range)
