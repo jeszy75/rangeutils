@@ -1,5 +1,7 @@
 package rangeutils;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,7 +68,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param max the inclusive upper bound
      * @return a {@code NumberRange} object, not {@code null}
      */
-    public static <T extends Number & Comparable<T>> NumberRange<T> of(T min, T max) {
+    public static <T extends Number & Comparable<T>> @NonNull NumberRange<T> of(@NonNull T min, @NonNull T max) {
         if (!ALL_CACHE.containsKey(min.getClass())) {
             throw new IllegalArgumentException("Unsupported numeric type: " + min.getClass().getName());
         }
@@ -81,7 +83,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * {@return the object representing the empty range}
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable<T>> NumberRange<T> empty() {
+    public static <T extends Number & Comparable<T>> @NonNull NumberRange<T> empty() {
         return (NumberRange<T>) EMPTY;
     }
 
@@ -91,7 +93,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param <T> a numeric type
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable<T>> NumberRange<T> all(Class<T> type) {
+    public static <T extends Number & Comparable<T>> @NonNull NumberRange<T> all(Class<T> type) {
         if (!ALL_CACHE.containsKey(type)) {
             throw new IllegalArgumentException();
         }
@@ -110,7 +112,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param value the value to be tested
      */
-    public boolean contains(T value) {
+    public boolean contains(@NonNull T value) {
         return !isEmpty() && min.compareTo(value) <= 0 && value.compareTo(max) <= 0;
     }
 
@@ -119,7 +121,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param range the range to be tested
      */
-    public boolean containsRange(NumberRange<T> range) {
+    public boolean containsRange(@NonNull NumberRange<T> range) {
         return range.isEmpty() ||
             (contains(range.getMin()) && contains(range.getMax()));
     }
@@ -129,7 +131,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param range the range to be tested
      */
-    public boolean isOverlapping(NumberRange<T> range) {
+    public boolean isOverlapping(@NonNull NumberRange<T> range) {
         if (isEmpty() || range.isEmpty()) {
             return false;
         }
@@ -142,7 +144,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param range the range to be tested
      */
-    public boolean isDisjoint(NumberRange<T> range) {
+    public boolean isDisjoint(@NonNull NumberRange<T> range) {
         return !isOverlapping(range);
     }
 
@@ -151,7 +153,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      *
      * @param range the range to be intersected with the range
      */
-    public NumberRange<T> intersect(NumberRange<T> range) {
+    public @NonNull NumberRange<T> intersect(@NonNull NumberRange<T> range) {
         if (this == range) {
             return this;
         }
@@ -167,7 +169,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @param ranges the ranges to be intersected with the range
      */
     @SafeVarargs
-    public final NumberRange<T> intersect(NumberRange<T>... ranges) {
+    public final @NonNull NumberRange<T> intersect(@NonNull NumberRange<T>... ranges) {
         var result = this;
         for (var range : ranges) {
             result = result.intersect(range);
@@ -187,7 +189,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @return the constrained value in the range
      * @throws IllegalArgumentException if the range is empty
      */
-    public T clamp(T value) {
+    public @NonNull T clamp(@NonNull T value) {
         if (isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -204,7 +206,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @throws IllegalArgumentException if the specified range is disjoint from
      *                                  this range
      */
-    public NumberRange<T> union(NumberRange<T> range) {
+    public @NonNull NumberRange<T> union(@NonNull NumberRange<T> range) {
         if (this == range || range.isEmpty()) {
             return this;
         }
@@ -222,7 +224,7 @@ public class NumberRange<T extends Number & Comparable<T>> {
      * @throws IllegalArgumentException if the specified range is disjoint from
      *                                  this range
      */
-    public NumberRange<T> union(NumberRange<T>... ranges) {
+    public @NonNull NumberRange<T> union(@NonNull NumberRange<T>... ranges) {
         var result = this;
         for (var range : ranges) {
             result = result.union(range);

@@ -1,5 +1,7 @@
 package rangeutils;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.Objects;
 
 /**
@@ -54,7 +56,7 @@ public class IntRange {
      * @param max the inclusive upper bound
      * @return an {@code IntRange} object, not {@code null}
      */
-    public static IntRange of(int min, int max) {
+    public static @NonNull IntRange of(int min, int max) {
         if (min <= max) {
             return new IntRange(min, max);
         } else {
@@ -83,7 +85,7 @@ public class IntRange {
      *
      * @param range the range to be tested
      */
-    public boolean containsRange(IntRange range) {
+    public boolean containsRange(@NonNull IntRange range) {
         return range.isEmpty() ||
             (contains(range.getMin()) && contains(range.getMax()));
     }
@@ -93,7 +95,7 @@ public class IntRange {
      *
      * @param range the range to be tested
      */
-    public boolean isOverlapping(IntRange range) {
+    public boolean isOverlapping(@NonNull IntRange range) {
         return contains(range.getMin()) || contains(range.getMax())
                 || range.contains(min) || range.contains(max);
     }
@@ -103,7 +105,7 @@ public class IntRange {
      *
      * @param range the range to be tested
      */
-    public boolean isDisjoint(IntRange range) {
+    public boolean isDisjoint(@NonNull IntRange range) {
         return !isOverlapping(range);
     }
 
@@ -112,7 +114,7 @@ public class IntRange {
      *
      * @param range the range to be intersected with the range
      */
-    public IntRange intersect(IntRange range) {
+    public @NonNull IntRange intersect(@NonNull IntRange range) {
         if (this == range) {
             return this;
         }
@@ -127,7 +129,7 @@ public class IntRange {
      *
      * @param ranges the ranges to be intersected with the range
      */
-    public IntRange intersect(IntRange... ranges) {
+    public @NonNull IntRange intersect(@NonNull IntRange... ranges) {
         var result = this;
         for (var range : ranges) {
             result = result.intersect(range);
@@ -160,7 +162,7 @@ public class IntRange {
      * @throws IllegalArgumentException if the specified range neither overlaps
      *                                  with nor is adjacent to this range
      */
-    public IntRange union(IntRange range) {
+    public @NonNull IntRange union(@NonNull IntRange range) {
         if (this == range || range.isEmpty()) {
             return this;
         }
@@ -178,7 +180,7 @@ public class IntRange {
      * @throws IllegalArgumentException if the specified range neither overlaps
      *                                  with nor is adjacent to this range
      */
-    public IntRange union(IntRange... ranges) {
+    public @NonNull IntRange union(@NonNull IntRange... ranges) {
         var result = this;
         for (var range : ranges) {
             result = result.union(range);
