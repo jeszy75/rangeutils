@@ -152,8 +152,12 @@ public class IntRange {
      *
      * @param value the value to be constrained
      * @return the constrained value in the range
+     * @throws IllegalArgumentException if the range is empty
      */
     public int clamp(int value) {
+        if (isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         if (contains(value)) {
             return value;
         }
