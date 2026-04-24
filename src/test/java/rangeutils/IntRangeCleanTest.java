@@ -157,6 +157,11 @@ public class IntRangeCleanTest {
     }
 
     @Test
+    void clamp_EmptyRangeShouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> IntRange.EMPTY.clamp(0));
+    }
+
+    @Test
     void union_OverlappingAndAdjacentRanges() {
         assertSame(range, range.union(range));
         assertIntRange(15, 30, range.union(IntRange.of(20, 25)));
