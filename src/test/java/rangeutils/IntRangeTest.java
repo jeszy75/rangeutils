@@ -142,6 +142,7 @@ class IntRangeTest {
         assertEquals(30, range.clamp(30));
         assertEquals(15, range.clamp(-10));
         assertEquals(30, range.clamp(100));
+        assertThrows(IllegalArgumentException.class, () -> IntRange.EMPTY.clamp(0));
     }
 
     @Test
